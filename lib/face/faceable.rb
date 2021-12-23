@@ -20,6 +20,10 @@ module Face
         hash.merge!(incoming)
         self
       end
+      define_method :"clear_#{name}" do
+        instance_variable_set(:"@#{name}", {})
+        self
+      end
     end
     module_function :hash_attr
 
@@ -34,6 +38,10 @@ module Face
         instance_variable_set(:"@#{name}", str)
         self
       end
+      define_method :"clear_#{name}" do
+        instance_variable_set(:"@#{name}", '') # TODO: A better way to say "don't inherit this" would be nice
+        self
+      end
     end
     module_function :stringish_attr
 
@@ -43,6 +51,9 @@ module Face
       end
       other.send :stringish_attr, :url
       other.send :stringish_attr, :verb
+      other.send :hash_attr, :params
+      other.send :hash_attr, :headers
+      other.send :stringish_attr, :body
     end
   end
 end
