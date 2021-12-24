@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require 'typhoeus'
-require_relative '../lib/face/faceable'
+require_relative '../lib/structured_api/structured_apiable'
 Dir['lib/**/*.rb'].each { |file| require_relative "../#{file}" }
 
-module Face
+module StructuredApi
 end

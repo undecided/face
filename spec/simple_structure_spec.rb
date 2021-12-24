@@ -1,13 +1,20 @@
 # frozen_string_literal: true
 
-class SimpleFace < Face::Endpoint
+class SimpleStructuredApi < StructuredApi::Endpoint
   verb :post
-  url 'https://google.com'
+  url 'https://google.com/'
   body 'just keep swimming'
   params q: 'fish'
 end
 
-describe SimpleFace do
+class SimpleExtendedApi < SimpleStructuredApi
+  verb :get
+  path '/about'
+  clear_body # NOTE: Body doesn't make sense on a get - maybe some autoswitching here?
+  params q: 'cats'
+end
+
+describe SimpleStructuredApi do
   let(:uri) { 'https://google.com?q=fish' }
   let(:verb) { :post }
 
@@ -21,7 +28,7 @@ describe SimpleFace do
     end
 
     context 'defaulting to the items given during setup' do
-      subject { SimpleFace.new.run! }
+      subject { SimpleStructuredApi.new.run! }
 
       it 'passes the request to Typhoeus' do
         expect(subject).to eq 'dummy response'
@@ -29,10 +36,21 @@ describe SimpleFace do
       end
     end
 
-    context 'overriding the defaults' do
+    context 'overriding the defaults manually' do
       let(:uri) { 'https://google.com?q=pizza' }
       let(:verb) { :get }
-      subject { SimpleFace.new.verb(:get).params(q: :pizza).clear_body.run! }
+      subject { SimpleStructuredApi.new.verb(:get).params(q: :pizza).clear_body.run! }
+
+      it 'passes the request to Typhoeus' do
+        expect(subject).to eq 'dummy response'
+        expect(WebMock).to have_requested(verb, uri).with { |req| req.body == '' }
+      end
+    end
+
+    context 'overriding the defaults structurally' do
+      let(:uri) { 'https://google.com/about?q=cats' }
+      let(:verb) { :get }
+      subject { SimpleExtendedApi.new.run! }
 
       it 'passes the request to Typhoeus' do
         expect(subject).to eq 'dummy response'

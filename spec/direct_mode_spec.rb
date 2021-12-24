@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Face::Endpoint do
+describe StructuredApi::Endpoint do
   let(:uri) { 'https://google.com' }
   let(:verb) { :get }
   let(:body) { nil }

@@ -1,15 +1,28 @@
-# Face
+# StructuredApi
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/face`. To experiment with that code, run `bin/console` for an interactive prompt.
+**The aim:** A library you can use to write quick API calls, or (more usefully)
+produce classes that - with a very simple DSL - cleanly describe the API to be
+connected to.
 
-TODO: Delete this and the text above, and describe your gem
+Eventually, this will encompass:
+
+ - [X] One-liner api calls, e.g. `StructuredApi.new.url("google.com").run!`
+ - [X] Simple class-based dsl where you specify url, params, body etc
+ - [X] Class hierarchy - e.g. create an ApplicationClient with auth settings,
+ and extend that for each endpoint
+ - [ ] Path hierarchy - e.g. FooApi set URL as 'foo.com', FooApi::V1 as '/v1', then endpoint
+ - [ ] Data munging hooks - how do we transform our domain language into theirs?
+ - [ ] Lifecycle hooks - e.g. easily log incoming / outgoing messages across your
+ whole project
+ - [ ] Virtual Attributes - e.g. specify that your API takes a customer, and use
+ that customer in your data munging phase (or anywhere really)
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'face'
+gem 'structured_api'
 ```
 
 And then execute:
@@ -18,11 +31,33 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install face
+    $ gem install structured_api
 
 ## Usage
 
-TODO: Write usage instructions here
+The easy one-liner way:
+
+```
+StructuredApi::Endpoint.new.url('https://foo.com').verb(:get).params(q: 'whee').headers(x: :y).run!
+```
+
+The better way, define the way you want to connect using a structured DSL:
+
+```
+class MyBlogApi < StructuredApi::Endpoint
+  url 'https://myblog.com/v1/' # can contain part of the path if you like, trailing slashes ignored
+  headers { "Authorization" => "Basic aa11aa11aa11aa11aa11aa11aa=" }
+end
+
+class CreateBlogPost < MyBlogApi
+  verb :post
+  path '/posts' # leading slashes ignored
+end
+
+CreateBlogPost.new.body("<h1>Hello World!</h1>").run!
+```
+
+For more information on where we're heading with this, check out ONE_DAY.md
 
 ## Development
 
@@ -32,7 +67,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/face.
+Bug reports and pull requests are welcome on GitHub at https://github.com/undecided/structured_api.
 
 ## License
 

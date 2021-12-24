@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-require_relative 'lib/face/version'
+require_relative 'lib/structured_api/version'
 
 Gem::Specification.new do |spec|
-  spec.name = 'face'
-  spec.version = Face::VERSION
+  spec.name = 'structured_api'
+  spec.version = StructuredApi::VERSION
   spec.authors = ['Matthew Bennett-Lovesey']
-  spec.email = ['matt+gitcommits@blltd.eu']
+  spec.email = ['matt@blltd.uk']
 
-  spec.summary = 'Writing API clients with a happy face'
-  spec.description = 'Create your API integrations the easy way. Quickly write out the general shape of the API, and Face will do the rest'
-  spec.homepage = 'https://github.com/undecided/face'
+  spec.summary = 'Writing API clients with a happy structured_api'
+  spec.description = 'Create your API integrations the easy way. Quickly write out the general shape of the API, and StructuredApi will do the rest'
+  spec.homepage = 'https://github.com/undecided/structured_api'
   spec.license = 'MIT'
   spec.required_ruby_version = '>= 2.6.0'
 

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'webmock/rspec'
-require_relative '../lib/face'
+require_relative '../lib/structured_api'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

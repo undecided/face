@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    face (0.1.0)
+    structured_api (0.1.0)
       typhoeus
 
 GEM
@@ -76,12 +76,12 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  face!
   pry
   rack-test
   rake (~> 13.0)
   rspec (~> 3.0)
   standard (~> 1.3)
+  structured_api!
   webmock
 
 BUNDLED WITH

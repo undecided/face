@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in face.gemspec
+# Specify your gem's dependencies in structured_api.gemspec
 gemspec
 
 gem 'rake', '~> 13.0'

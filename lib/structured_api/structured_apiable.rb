@@ -1,7 +1,7 @@
-module Face
-  module Faceable
+module StructuredApi
+  module StructuredApiable
     # TODO: Needs clear_attr(name) methods
-    # TODO: Raise an exception on the singleton methods if self.class == Face::Endpoint (it will pollute everything)
+    # TODO: Raise an exception on the singleton methods if self.class == StructuredApi::Endpoint (it will pollute everything)
 
     # Defines an instance method and a class method,
     # where the class method sets the template for a thing
@@ -12,6 +12,10 @@ module Face
         hash = instance_variable_get(:"@#{name}") || {}
         instance_variable_set(:"@#{name}", hash)
         hash.merge!(incoming)
+        self
+      end
+      define_singleton_method :"clear_#{name}" do
+        instance_variable_set(:"@#{name}", {})
         self
       end
       define_method name do |incoming|
@@ -33,6 +37,10 @@ module Face
         instance_variable_set(:"@#{name}", str)
         self
       end
+      define_singleton_method :"clear_#{name}" do
+        instance_variable_set(:"@#{name}", '')
+        self
+      end
       define_method name do |incoming|
         str = incoming || get_attr(name)
         instance_variable_set(:"@#{name}", str)
@@ -47,9 +55,12 @@ module Face
 
     def self.extended(other)
       other.define_method :get_attr do |name, default = nil|
-        instance_variable_get(:"@#{name}") || self.class.instance_variable_get(:"@#{name}").dup || default
+        instance_variable_get(:"@#{name}") ||
+          self.class.ancestors.map { |x| x.instance_variable_get(:"@#{name}").dup }.compact.first ||
+          default
       end
       other.send :stringish_attr, :url
+      other.send :stringish_attr, :path
       other.send :stringish_attr, :verb
       other.send :hash_attr, :params
       other.send :hash_attr, :headers
