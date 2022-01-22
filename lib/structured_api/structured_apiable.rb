@@ -47,7 +47,7 @@ module StructuredApi
         self
       end
       define_method :"clear_#{name}" do
-        instance_variable_set(:"@#{name}", '') # TODO: A better way to say "don't inherit this" would be nice
+        instance_variable_set(:"@#{name}", '') # TODO: replace with ->() {nil} maybe?
         self
       end
     end

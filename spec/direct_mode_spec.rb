@@ -17,6 +17,7 @@ describe StructuredApi::Endpoint do
 
     context 'with defaults on the non-required fields' do
       subject { described_class.new.url(uri).run! }
+
       it 'passes the request to Typhoeus' do
         expect(subject).to eq 'dummy response'
         expect(WebMock).to have_requested(verb, uri)
@@ -25,6 +26,7 @@ describe StructuredApi::Endpoint do
 
     context 'with explicitness' do
       subject { described_class.new.url(uri).verb(:get).params({}).headers({}).run! }
+
       it 'passes the request to Typhoeus' do
         expect(subject).to eq 'dummy response'
         expect(WebMock).to have_requested(verb, uri)
