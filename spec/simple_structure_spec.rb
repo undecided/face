@@ -14,6 +14,16 @@ class SimpleExtendedApi < SimpleStructuredApi
   params q: 'cats'
 end
 
+class CustomizedApi < SimpleStructuredApi
+  verb :get
+  stringish_attr :id
+  path :about
+
+  def override_path
+    "#{get_attr(:path)}/#{get_attr(:id)}"
+  end
+end
+
 describe SimpleStructuredApi do
   let(:uri) { 'https://google.com?q=fish' }
   let(:verb) { :post }
@@ -55,6 +65,17 @@ describe SimpleStructuredApi do
       it 'passes the request to Typhoeus' do
         expect(subject).to eq 'dummy response'
         expect(WebMock).to have_requested(verb, uri).with { |req| req.body == '' }
+      end
+    end
+
+    context 'custom params' do
+      let(:uri) { 'https://google.com/about/images?q=fish' }
+      let(:verb) { :get }
+      subject { CustomizedApi.new.id(:images).run! }
+
+      it 'passes the request to Typhoeus' do
+        expect(subject).to eq 'dummy response'
+        expect(WebMock).to have_requested(verb, uri).with(body: 'just keep swimming')
       end
     end
   end

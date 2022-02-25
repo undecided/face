@@ -6,7 +6,7 @@ module StructuredApi
     # Defines an instance method and a class method,
     # where the class method sets the template for a thing
     # and the instance method uses that and extends it.
-    # Fetched with get_attr(name, default_if_missing)
+    # Fetched with get_method_or_attr(name, default_if_missing)
     def hash_attr(name)
       define_singleton_method name do |incoming|
         hash = instance_variable_get(:"@#{name}") || {}
@@ -19,7 +19,7 @@ module StructuredApi
         self
       end
       define_method name do |incoming|
-        hash = get_attr(name, {})
+        hash = get_method_or_attr(name, {})
         instance_variable_set(:"@#{name}", hash)
         hash.merge!(incoming)
         self
@@ -42,7 +42,7 @@ module StructuredApi
         self
       end
       define_method name do |incoming|
-        str = incoming || get_attr(name)
+        str = incoming || get_method_or_attr(name)
         instance_variable_set(:"@#{name}", str)
         self
       end
@@ -54,6 +54,11 @@ module StructuredApi
     module_function :stringish_attr
 
     def self.extended(other)
+      other.define_method :get_method_or_attr do |name, default = nil|
+        (respond_to?(:"override_#{name}") && send(:"override_#{name}")) ||
+          get_attr(name, default)
+      end
+
       other.define_method :get_attr do |name, default = nil|
         instance_variable_get(:"@#{name}") ||
           self.class.ancestors.map { |x| x.instance_variable_get(:"@#{name}").dup }.compact.first ||

@@ -18,18 +18,20 @@ class GhostCms::Posts < GhostCms
 end
 
 ## Not possible yet
-# class GhostCms::GetPost
-#   path '/posts'
-#   attribute :id
-#
-#   def path
-#     "/posts/#{id}"
-#   end
-# end
+class GhostCms::GetPost < GhostCms
+  path '/posts'
+  stringish_attr :id
+
+  def override_path
+    "#{get_attr(:path)}/#{get_attr(:id)}"
+  end
+end
 
 class GhostCms::Authors < GhostCms
   path '/authors'
 end
 
-puts GhostCms::Posts.new.debug!.run!
 puts GhostCms::Authors.new.debug!.run!
+puts GhostCms::Posts.new.debug!.run!.inspect
+
+puts GhostCms::GetPost.new.id(ASK["Enter a ghost post id", "5979a779df093500228e958d"]).debug!.run!
