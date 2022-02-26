@@ -10,11 +10,13 @@ Eventually, this will encompass:
  - [X] Simple class-based dsl where you specify url, params, body etc
  - [X] Class hierarchy - e.g. create an ApplicationClient with auth settings,
  and extend that for each endpoint
+ - [X] Ability to define attributes and override previously defined attributes using methods
+ - [ ] Helpers for common methods, such as basic auth
  - [ ] Path hierarchy - e.g. FooApi set URL as 'foo.com', FooApi::V1 as '/v1', then endpoint
  - [ ] Data munging hooks - how do we transform our domain language into theirs?
  - [ ] Lifecycle hooks - e.g. easily log incoming / outgoing messages across your
  whole project
- - [ ] Virtual Attributes - e.g. specify that your API takes a customer, and use
+ - [X] (ish) Virtual Attributes - e.g. specify that your API takes a customer, and use
  that customer in your data munging phase (or anywhere really)
 
 ## Installation
@@ -56,8 +58,9 @@ end
 
 CreateBlogPost.new.body("<h1>Hello World!</h1>").run!
 ```
+For a real-world and executable example of this, see the `examples/`` folder or `spec/simple_structure_spec.rb`
 
-For more information on where we're heading with this, check out ONE_DAY.md
+For more information on the initial vision for this, check out ONE_DAY.md
 
 ## Development
 
