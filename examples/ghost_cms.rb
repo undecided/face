@@ -34,4 +34,4 @@ end
 puts GhostCms::Authors.new.debug!.run!
 puts GhostCms::Posts.new.debug!.run!.inspect
 
-puts GhostCms::GetPost.new.id(ASK["Enter a ghost post id", "5979a779df093500228e958d"]).debug!.run!
+puts GhostCms::GetPost.new.id(ASK['Enter a ghost post id', '5979a779df093500228e958d']).debug!.run!
